@@ -4,17 +4,6 @@ export const UserList = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-export const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
-  width: 500px;
-  height: calc(100vh - 270px);
-  margin-block-start: 30px;
-  overflow-y: auto;
-`;
-
 export const User = styled.div`
   display: flex;
   justify-content: center;
@@ -32,7 +21,17 @@ export const UserInfo = styled.div`
 `;
 
 export const UserPicture = styled.img`
-  border-radius: 45%;
+  border-radius: 100%;
+`;
+
+export const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  width: 500px;
+  height: calc(100vh - 270px);
+  margin-block-start: 30px;
+  overflow-y: auto;
 `;
 
 export const SpinnerWrapper = styled.div`

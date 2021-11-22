@@ -8,9 +8,8 @@ const Home = () => {
   const { users, isLoading, fetchUsers } = usePeopleFetch();
   const [nats, setNats] = useState([]);
   React.useEffect(() => {
-    if (nats) {
+    if (nats && !isLoading) {
       fetchUsers(nats);
-      console.log("nats changing", nats);
     }
   }, [nats]);
 
