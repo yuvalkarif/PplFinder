@@ -6,8 +6,18 @@ import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import * as S from "./style";
 
-const UserList = ({ users, isLoading }) => {
+const UserList = ({ users, isLoading, setNats, nats }) => {
   const [hoveredUserId, setHoveredUserId] = useState();
+  //Converted each country checkbox values to array of values in state to follow if its checked
+  //and to be able to add as many countries as you wish.
+  const [countries, setCountries] = useState([
+    { value: "BR", label: "Brazil", isChecked: false },
+    { value: "AU", label: "Australia", isChecked: false },
+    { value: "CA", label: "Canada", isChecked: false },
+    { value: "DE", label: "Germany", isChecked: false },
+    { value: "NZ", label: "New Zealand", isChecked: false },
+  ]);
+  const [checkedNats, setCheckedNats] = useState([]);
 
   const handleMouseEnter = (index) => {
     setHoveredUserId(index);
@@ -16,14 +26,44 @@ const UserList = ({ users, isLoading }) => {
   const handleMouseLeave = () => {
     setHoveredUserId();
   };
+  const handleCheckBox = (value) => {
+    // Updating object checked in arr
+    const newCountries = countries.slice();
+    countries.forEach((element, i) => {
+      if (element.value === value) {
+        newCountries[i] = { ...element, isChecked: !element.isChecked };
+      }
+    });
+    setCountries(newCountries);
+  };
+  useEffect(() => {
+    // Updating (inner) Checked Nats array used to Evaluate if there is a need to update the main one.
+    if (countries) {
+      setCheckedNats(
+        countries.flatMap((country) => {
+          return country.isChecked ? country.value : [];
+        })
+      );
+    }
+  }, [countries]);
+
+  useEffect(() => {
+    // Updating Nats array used to Fetch (Excluding the initial empty fetching repititon)
+    if (nats.length !== 0 || !nats.length !== !checkedNats.length) {
+      setNats(checkedNats);
+    }
+  }, [checkedNats]);
 
   return (
     <S.UserList>
       <S.Filters>
-        <CheckBox value="BR" label="Brazil" />
-        <CheckBox value="AU" label="Australia" />
-        <CheckBox value="CA" label="Canada" />
-        <CheckBox value="DE" label="Germany" />
+        {countries.map((country) => (
+          <CheckBox
+            value={country.value}
+            label={country.label}
+            onChange={handleCheckBox}
+          />
+        ))}
       </S.Filters>
       <S.List>
         {users.map((user, index) => {
